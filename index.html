@@ -1,41 +1,66 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | Flip The Cards</title>
-  </head>
-  <body style="text-align: center; padding: 0; border: 0; margin: 0;">
-    <canvas id="unity-canvas" width=1512 height=648 tabindex="-1" style="width: 1512px; height: 648px; background: #231F20"></canvas>
-    <script src="Build/FlipTheCards.loader.js"></script>
-    <script>
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FlipTheCards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="data:,"> <!-- prevents 404 favicon error -->
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: #1e1e1e;
+      overflow: hidden;
+    }
+    #unity-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      background: #000;
+    }
+    #loadingBar {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      font-size: 1.2em;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div id="unity-container">
+    
+    <canvas id="unity-canvas"></canvas>
+  </div>
 
-        var canvas = document.querySelector("#unity-canvas");
-        canvas.style.width = "100%";
-        canvas.style.height = "100%";
-        canvas.style.position = "fixed";
-
-        document.body.style.textAlign = "left";
-      }
-
-      createUnityInstance(document.querySelector("#unity-canvas"), {
-        arguments: [],
-        dataUrl: "Build/FlipTheCards.data.unityweb",
-        frameworkUrl: "Build/FlipTheCards.framework.js.unityweb",
-        codeUrl: "Build/FlipTheCards.wasm.unityweb",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "Flip The Cards",
-        productVersion: "1.0",
-        // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
-        // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
-      });
-    </script>
-  </body>
+  <!-- 👇 IMPORTANT: Correct loader file name -->
+  <script src="Build/FlipTheCards.loader.js"></script>
+  <script>
+    createUnityInstance(document.querySelector("#unity-canvas"), {
+      dataUrl: "Build/FlipTheCards.data.unityweb",
+      frameworkUrl: "Build/FlipTheCards.framework.js.unityweb",
+      codeUrl: "Build/FlipTheCards.wasm.unityweb",
+      streamingAssetsUrl: "StreamingAssets",
+      companyName: "Your Company",
+      productName: "FlipTheCards",
+      productVersion: "1.0"
+    }).then((unityInstance) => {
+      //document.getElementById("loadingBar").style.display = "none";
+    }).catch((message) => {
+      alert("Failed to load game:\n" + message);
+    });
+  </script>
+</body>
 </html>
